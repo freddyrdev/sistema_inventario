@@ -1,3 +1,5 @@
+from colorama import Fore, Style
+
 #############################
 #       Base de datos       #
 #############################
@@ -10,3 +12,18 @@
 
 RUTA = "data/inventario.db"
 
+################################
+#       Estilos de texto       #
+################################
+
+# Colores o personalizacion de textos de exito,
+# advertencia y errores al momento de utilizar la
+# aplicacion
+
+# NOTA: Esta configuracion se modificara en todos los
+# mensajes de la app
+
+EXITO = Fore.GREEN + Style.BRIGHT + "EXITO:" + Style.RESET_ALL
+ADVERTENCIA = Fore.YELLOW + Style.BRIGHT + "ADVERTENCIA:" + Style.RESET_ALL
+ERROR = Fore.RED + Style.BRIGHT + "ERROR:" + Style.RESET_ALL
+PREGUNTA = Fore.CYAN + Style.BRIGHT + "[?]:" + Style.RESET_ALL
