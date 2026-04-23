@@ -24,6 +24,6 @@ RUTA = "data/inventario.db"
 # mensajes de la app
 
 EXITO = Fore.GREEN + Style.BRIGHT + "EXITO:" + Style.RESET_ALL
-ADVERTENCIA = Fore.YELLOW + Style.BRIGHT + "ADVERTENCIA:" + Style.RESET_ALL
+ADVERTENCIA = Fore.YELLOW + Style.BRIGHT + "[!]:" + Style.RESET_ALL
 ERROR = Fore.RED + Style.BRIGHT + "ERROR:" + Style.RESET_ALL
 PREGUNTA = Fore.CYAN + Style.BRIGHT + "[?]:" + Style.RESET_ALL

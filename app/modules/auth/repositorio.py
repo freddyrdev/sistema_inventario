@@ -9,7 +9,25 @@ class Repositorio:
         
         cursor.execute(
             "SELECT * FROM usuario WHERE usuario = ? OR email = ?;",
-            (usuario["nombre"], usuario["email"])
+            (usuario["usuario"], usuario["email"])
         )
 
         return cursor.fetchone()
+    
+    def crear_usuario(self, usuario):
+        cursor = self._conexion.cursor()
+        
+        cursor.execute(
+            """
+            INSERT INTO usuario (nombre_completo, usuario, email, empresa, rol, contrasenia)
+            VALUES (?, ?, ?, ?, ?, ?);
+            """, (
+                usuario["nombre_completo"], 
+                usuario["usuario"], 
+                usuario["email"], 
+                usuario["empresa"], 
+                usuario["rol"],
+                usuario["contrasenia"])
+        )
+
+        self._conexion.commit()

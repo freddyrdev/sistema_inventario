@@ -13,4 +13,4 @@ class Mensaje:
         input(f"{ self._tipos[tipo] } { msg }\n")
 
     def pregunta(self, msg):
-        input(f"{ self._tipos["pregunta"] } { msg }: ")
+        return input(f"{ self._tipos["pregunta"] } { msg }: ")

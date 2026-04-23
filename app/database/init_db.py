@@ -5,11 +5,15 @@ def iniciar_db():
     cursor = conexion.cursor()
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS usuarios (
+    CREATE TABLE IF NOT EXISTS usuario (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE,
-        password TEXT
-    )
+        nombre_completo TEXT NOT NULL,
+        usuario TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        empresa TEXT NOT NULL,
+        rol TEXT DEFAULT 'operador',
+        contrasenia TEXT NOT NULL
+    );
     """)
 
     cursor.execute("""

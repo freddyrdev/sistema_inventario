@@ -1,5 +1,7 @@
 from app.modules.auth.repositorio import Repositorio
+
 from app.utils.mensajes import Mensaje
+from app.utils.helpers.decorators.deco_validacion import validacion
 
 class Servicio:
     def __init__(self):
@@ -8,51 +10,38 @@ class Servicio:
 
     def iniciar_sesion(self):
         while True:
-            nombre = self._msg.pregunta("Nombre de usuario")
-            email = self._msg.pregunta("Correo electronico")
-            contrasenia = self._msg.pregunta("Contraseña de usuario")
-
             usuario = self._repo.buscar_usuario({
-                "nombre": nombre,
-                "email": email,
-                "contrasenia": contrasenia
+                "usuario": self._pedir_dato("Nombre de usuario"),
+                "email": self._pedir_dato("Correo electronico", email=True),
+                "contrasenia": self._pedir_dato("Contrasena")
             })
 
             if usuario: 
                 self._msg.mensaje("Inicio de sesion con exito.", "exito")
-                return
+                break
             
             self._msg.mensaje("Las credenciales ingresadas no son validas.", "error")
 
     def registro(self):
         while True:
-            nombre_completo = self._msg.pregunta("Nombre completo")
-            if not nombre_completo: 
-                self._msg.mensaje("Nombre completo requerido", "error")
+            usuario = {
+                "nombre_completo": self._pedir_dato("Nombre completo"),
+                "usuario": self._pedir_dato("Nombre de usuario"),
+                "email": self._pedir_dato("Correo electronico", email=True),
+                "empresa": self._pedir_dato("Empresa perteneciente"),
+                "rol": self._pedir_dato("Rol que ocupa", obligatorio=False, default="empleado"),
+                "contrasenia": self._pedir_dato("Contraseña")
+            }
+
+            respuesta = self._repo.buscar_usuario(usuario)
+            if respuesta: 
+                self._msg.mensaje("El usuario ya existe.", "error")
                 continue
 
-            usuario = self._msg.pregunta("Nombre de usuario")
-            if not usuario: 
-                self._msg.mensaje("Nombre de usuario requerido", "error")
-                continue
+            self._repo.crear_usuario(usuario)
+            self._msg.mensaje("El usuario se a creado con exito.", "exito")
+            break
 
-            email = self._msg.pregunta("Correo electronico")
-            if not email:
-                self._msg.mensaje("Correo electronico requerido", "error")
-                continue
-
-            empresa = self._msg.pregunta("Empresa perteneciente")
-            if not empresa:
-                self._msg.mensaje("La empresa es requerida", "error")
-                continue
-
-            rol = self._msg.pregunta("Rol o perfil en la empresa")
-            if not rol: rol = "empleado"
-
-            ({
-                "nombre_completo": nombre_completo,
-                "usuario": usuario,
-                "email": email,
-                "empresa": empresa,
-                "rol": rol
-            })
+    @validacion
+    def _pedir_dato(self, etiqueta, **reglas):
+        return self._msg.pregunta(etiqueta)
