@@ -26,8 +26,8 @@ class Auth(MenuBase):
             return None
         return opcion
         
-    def _eleccion(self, eleccion):
-        match eleccion:
+    def _procesar_eleccion(self, opcion):
+        match opcion:
             case "1": self._servicio.iniciar_sesion()
             case "2": self._servicio.registro()
             case "3": self.salir()

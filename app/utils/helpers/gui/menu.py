@@ -23,14 +23,14 @@ class MenuBase(ABC):
                 self._msg.mensaje("Presione 'Enter' para continuar.", "advertencia")
                 continue
 
-            self._procesar_coleccion(opcion)
+            self._procesar_eleccion(opcion)
 
     @abstractmethod
     def _mostrar_gui(self):
         pass
 
     @abstractmethod
-    def _procesar_coleccion(self, opcion):
+    def _procesar_eleccion(self, opcion):
         pass
 
     def salir(self):
