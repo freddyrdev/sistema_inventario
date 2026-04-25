@@ -1,7 +1,7 @@
 from functools import wraps
 import re
 
-from app.utils.mensajes import Mensaje
+from app.core.config import COMANDO
 
 def validacion(func):
     """
@@ -15,6 +15,9 @@ def validacion(func):
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
+        if getattr(self, "_salir_flujo", False):
+            return None
+        
         while True:
             valor = func(self, etiqueta, **reglas)
             valor_texto = str(valor).strip() if valor is not None else ""
@@ -23,6 +26,11 @@ def validacion(func):
             obligatorio = reglas.get("obligatorio", True)
             email = reglas.get("email", False)
             default = reglas.get("default", None)
+
+            # REGLA: Salir con un comando
+            if COMANDO and valor_texto.lower() == str(COMANDO).lower():
+                self._salir_flujo = True
+                return None
 
             # REGLA: Obligatorio
             if obligatorio and not valor_texto:

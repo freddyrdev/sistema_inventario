@@ -2,12 +2,15 @@ from app.modules.auth.repositorio import Repositorio
 
 from app.utils.mensajes import Mensaje
 from app.utils.helpers.decorators.deco_validacion import validacion
+from app.utils.helpers.decorators.deco_formulario import formulario
 
 class Servicio:
     def __init__(self):
         self._repo = Repositorio()
         self._msg = Mensaje()
+        self._salir_flujo = False
 
+    @formulario
     def iniciar_sesion(self):
         while True:
             usuario = self._repo.buscar_usuario({
@@ -16,12 +19,15 @@ class Servicio:
                 "contrasenia": self._pedir_dato("Contrasena")
             })
 
-            if usuario: 
+            if self._salir_flujo: break
+
+            if usuario:
                 self._msg.mensaje("Inicio de sesion con exito.", "exito")
                 break
             
             self._msg.mensaje("Las credenciales ingresadas no son validas.", "error")
 
+    @formulario
     def registro(self):
         while True:
             usuario = {
@@ -32,6 +38,8 @@ class Servicio:
                 "rol": self._pedir_dato("Rol que ocupa", obligatorio=False, default="empleado"),
                 "contrasenia": self._pedir_dato("Contraseña")
             }
+
+            if self._salir_flujo: break
 
             respuesta = self._repo.buscar_usuario(usuario)
             if respuesta: 
