@@ -33,5 +33,9 @@ class MenuBase(ABC):
     def _procesar_eleccion(self, opcion):
         pass
 
+    def cambiar_menu(self, menu_clase):
+        menu = menu_clase()
+        menu.iniciar()
+
     def salir(self):
         self._ejecutando = False

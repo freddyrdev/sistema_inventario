@@ -3,10 +3,11 @@ from app.modules.auth.menu import Auth
 
 # Procesos que recorrera el usuario
 
-
-
-if __name__ == "__main__":
+def main():
     auth = Auth()
-    
+
     iniciar_db()
     auth.iniciar()
+
+if __name__ == "__main__":
+    main()

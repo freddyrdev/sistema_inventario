@@ -19,11 +19,11 @@ class Servicio:
                 "contrasenia": self._pedir_dato("Contrasena")
             })
 
-            if self._salir_flujo: break
+            if self._salir_flujo: return False
 
             if usuario:
                 self._msg.mensaje("Inicio de sesion con exito.", "exito")
-                break
+                return True
             
             self._msg.mensaje("Las credenciales ingresadas no son validas.", "error")
 
@@ -39,7 +39,7 @@ class Servicio:
                 "contrasenia": self._pedir_dato("Contraseña")
             }
 
-            if self._salir_flujo: break
+            if self._salir_flujo: return False
 
             respuesta = self._repo.buscar_usuario(usuario)
             if respuesta: 
@@ -48,7 +48,7 @@ class Servicio:
 
             self._repo.crear_usuario(usuario)
             self._msg.mensaje("El usuario se a creado con exito.", "exito")
-            break
+            return True
 
     @validacion
     def _pedir_dato(self, etiqueta, **reglas):
