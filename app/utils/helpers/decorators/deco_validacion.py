@@ -10,10 +10,25 @@ def validacion(func):
     servira para validaciones ingresadas por teclado y al momento
     de recibir el mensaje de pregunta se utilizara este formato:
 
-    Asumiendo que ya creamos el metodo:
+    Creacion del metodo para la implementacion del decorador:
     ```python
-        self._pedir_dato("Nombre completo", obligatorio=True, email=True)
+    @validacion
+    def _pedir_dato(self, etiqueta, **reglas):
+        return self._msg.pregunta("Mensaje")
     ```
+    
+    Un ejemplo de como utilizar el sistema de validaciones
+    ```python
+        self._pedir_dato("Numero a ingresar", default=0, tipo=int)
+    ```
+
+    Los Kwargs permitidos son:
+    | Kwargs | Valores permitidos |
+    | :--- | :---: |
+    | obligatorio | `bool` |
+    | email | `bool` |
+    | default | `Any` |
+    | tipo | `type` |
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
