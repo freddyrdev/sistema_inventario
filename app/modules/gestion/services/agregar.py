@@ -12,7 +12,7 @@ class FormAgregar():
     def crear_producto(self):
         while True:
             self._repo.crear_producto({
-                "nombre": self._pedir_dato("Nombre del producto", unico=self._repo.buscar_producto, campo="nombre"),
+                "nombre": self._pedir_dato("Nombre del producto", consulta=self._repo.buscar_producto, campo="nombre"),
                 "categoria": self._pedir_dato("Categoria del producto"),
                 "precio": self._pedir_dato("Precio del producto", tipo=float),
                 "stock": self._pedir_dato("Stock del producto", default=0, tipo=int)

@@ -29,8 +29,8 @@ def validacion(func):
     | email | `bool` | Ninguna | `False` |
     | default | `Any` | Ninguna | `None` |
     | tipo | `type` | Ninguna | `str` |
-    | unico | `function` | `campo` | `None` |
-    | campo | `str` | `unico` | `None` |
+    | consulta | `function` | `campo` | `None` |
+    | campo | `str` | `consulta` | `None` |
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
@@ -48,7 +48,7 @@ def validacion(func):
             email = reglas.get("email", False)
             default = reglas.get("default", None)
             tipo = reglas.get("tipo", str)
-            unico = reglas.get("unico", None)
+            consulta = reglas.get("consulta", None)
             campo = reglas.get("campo", None)
 
             # DEPENDENCIA: Si default tiene valor obligatorio sera False
@@ -83,13 +83,13 @@ def validacion(func):
                     continue
                 
             # REGLA: Verificar si un dato es unico en la base de datos
-            if unico:
+            if consulta:
                 if not campo:
                     raise TypeError("The 'campo' argument is required to use 'unico' option")
                 
                 criterio = { campo: valor_texto }
 
-                if unico(**criterio) is not None:
+                if consulta(**criterio) is not None:
                     self._msg.mensaje(f"'{valor_texto}' ya existe en el sistema.", "error")
                     continue
 
