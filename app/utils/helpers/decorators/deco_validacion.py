@@ -23,12 +23,14 @@ def validacion(func):
     ```
 
     Los Kwargs permitidos son:
-    | Kwargs | Valores permitidos |
-    | :--- | :---: |
-    | obligatorio | `bool` |
-    | email | `bool` |
-    | default | `Any` |
-    | tipo | `type` |
+    | Kwargs | Valores permitidos | Dependencia | Valor por defecto |
+    | :--- | :---: | :---: | :---: |
+    | obligatorio | `bool` | `default` tiene valor sera `False` | `True` |
+    | email | `bool` | Ninguna | `False` |
+    | default | `Any` | Ninguna | `None` |
+    | tipo | `type` | Ninguna | `str` |
+    | unico | `function` | `campo` | `None` |
+    | campo | `str` | `unico` | `None` |
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
@@ -46,13 +48,15 @@ def validacion(func):
             email = reglas.get("email", False)
             default = reglas.get("default", None)
             tipo = reglas.get("tipo", str)
+            unico = reglas.get("unico", None)
+            campo = reglas.get("campo", None)
 
+            # DEPENDENCIA: Si default tiene valor obligatorio sera False
             if default != None: obligatorio = False
 
             # REGLA: Salir con un comando
             if COMANDO and valor_texto.lower() == str(COMANDO).lower():
-                self._salir_flujo = True
-                return None
+                raise StopIteration
 
             # REGLA: Obligatorio
             if obligatorio and not valor_texto:
@@ -70,11 +74,23 @@ def validacion(func):
             if not (valor_texto) and (default != None):
                 valor_texto = default
 
+            # REGLA: Tipos de datos
             if tipo:
                 try:
                     valor_texto = tipo(valor_texto)
                 except ValueError:
                     self._msg.mensaje("El tipo de dato ingresado es invalido.", "error")
+                    continue
+                
+            # REGLA: Verificar si un dato es unico en la base de datos
+            if unico:
+                if not campo:
+                    raise TypeError("The 'campo' argument is required to use 'unico' option")
+                
+                criterio = { campo: valor_texto }
+
+                if unico(**criterio) is not None:
+                    self._msg.mensaje(f"'{valor_texto}' ya existe en el sistema.", "error")
                     continue
 
             return valor_texto

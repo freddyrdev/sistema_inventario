@@ -19,10 +19,10 @@ def iniciar_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS productos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT,
-        categoria TEXT,
-        precio REAL,
-        stock INTEGER
+        nombre TEXT NOT NULL UNIQUE,
+        categoria TEXT DEFAULT 'General',
+        precio REAL NOT NULL CHECK (precio >= 0),
+        stock INTEGER NOT NULL DEFAULT 0 CHECK(stock >= 0)
     )
     """)
 

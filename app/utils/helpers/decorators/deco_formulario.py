@@ -34,12 +34,9 @@ def formulario(func):
         os.system("cls" if os.name == "nt" else "clear")
         self._msg.mensaje(f"Ingresa el comando { Fore.CYAN }'{ COMANDO }'{ Fore.RESET } para salir del formulario", "advertencia")
 
-        self._salir_flujo = False
-        resultado = func(self, *args, **kwargs)
-
-        if self._salir_flujo:
+        try:
+            return func(self, *args, **kwargs)
+        except StopIteration:
             self._msg.mensaje("El formulario se a cancelado", "advertencia")
             return None
-        
-        return resultado
     return envoltorio

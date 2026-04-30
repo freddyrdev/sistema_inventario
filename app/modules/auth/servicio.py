@@ -8,7 +8,6 @@ class Servicio:
     def __init__(self):
         self._repo = Repositorio()
         self._msg = Mensaje()
-        self._salir_flujo = False
 
     @formulario
     def iniciar_sesion(self):
@@ -18,8 +17,6 @@ class Servicio:
                 "email": self._pedir_dato("Correo electronico", email=True),
                 "contrasenia": self._pedir_dato("Contrasena")
             })
-
-            if self._salir_flujo: return False
 
             if usuario:
                 self._msg.mensaje("Inicio de sesion con exito.", "exito")
@@ -38,8 +35,6 @@ class Servicio:
                 "rol": self._pedir_dato("Rol que ocupa", obligatorio=False, default="empleado"),
                 "contrasenia": self._pedir_dato("Contraseña")
             }
-
-            if self._salir_flujo: return False
 
             respuesta = self._repo.buscar_usuario(usuario)
             if respuesta: 

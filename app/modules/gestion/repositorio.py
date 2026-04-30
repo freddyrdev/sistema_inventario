@@ -24,3 +24,14 @@ class Repositorio:
         ))
 
         self._conexion.commit()
+
+    def buscar_producto(self, **producto):
+        cursor = self._conexion.cursor()
+        
+        cursor.execute(
+            "SELECT * FROM productos WHERE nombre = ? OR id = ?;", (
+                producto.get("nombre", None), 
+                producto.get("id", None)
+        ))
+
+        return cursor.fetchone()
