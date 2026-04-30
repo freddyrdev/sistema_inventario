@@ -15,6 +15,8 @@ class MenuBase(ABC):
         self._ejecutando = True
 
     def iniciar(self):
+        self._ejecutando = True
+        
         while self._ejecutando:
             os.system("cls" if os.name == "nt" else "clear")
             opcion = self._mostrar_gui()

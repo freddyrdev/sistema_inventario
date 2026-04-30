@@ -11,7 +11,9 @@ def validacion(func):
     de recibir el mensaje de pregunta se utilizara este formato:
 
     Asumiendo que ya creamos el metodo:
-    self._pedir_dato("Nombre completo", obligatorio=True, email=True)
+    ```python
+        self._pedir_dato("Nombre completo", obligatorio=True, email=True)
+    ```
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
@@ -20,12 +22,17 @@ def validacion(func):
         
         while True:
             valor = func(self, etiqueta, **reglas)
+
+            # El valor que se escribe en el formulario
             valor_texto = str(valor).strip() if valor is not None else ""
 
             # Mapa de reglas
             obligatorio = reglas.get("obligatorio", True)
             email = reglas.get("email", False)
             default = reglas.get("default", None)
+            tipo = reglas.get("tipo", str)
+
+            if default != None: obligatorio = False
 
             # REGLA: Salir con un comando
             if COMANDO and valor_texto.lower() == str(COMANDO).lower():
@@ -45,8 +52,15 @@ def validacion(func):
                     continue
 
             # REGLA: Valor por defecto
-            if not obligatorio and default is not None:
+            if not (valor_texto) and (default != None):
                 valor_texto = default
+
+            if tipo:
+                try:
+                    valor_texto = tipo(valor_texto)
+                except ValueError:
+                    self._msg.mensaje("El tipo de dato ingresado es invalido.", "error")
+                    continue
 
             return valor_texto
     return envoltorio

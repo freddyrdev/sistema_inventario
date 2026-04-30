@@ -34,4 +34,4 @@ class Auth(MenuBase):
                     self.cambiar_menu(MenuPrincipal)
 
             case "3": self.salir()
-            case _: self._msg.mensaje("No se ha elegido ninguna opcion.", "advertencia")
+            case _: self._msg.mensaje("La opcion ingresada es invalida.", "error")

@@ -11,11 +11,23 @@ def formulario(func):
     modulo como un formulario al que el usuario
     ingresara los datos nesesarios para completarlo
 
-    USO DEL DECORADOR:
+    **USO DEL DECORADOR:**
     Se debe de crear un atributo privado con el nombre
-    _salir_flujo = False y al final del metodo del
-    formulario se preguntara si se salio del flujo
-    si no se salio se mostrara un mensaje de exito.
+    `_salir_flujo = True` y al final del metodo se
+    retornara un `_salir_flujo = False`
+
+    **EJEMPLO:**
+    ```python
+    def __init__(self):
+        self._salir_flujo = True
+
+    @formulario
+    def metodo(self):
+        # Logica del formulario
+        
+        if self._salir_flujo: 
+            return False
+    ```
     """
     @wraps(func)
     def envoltorio(self, *args, **kwargs):
