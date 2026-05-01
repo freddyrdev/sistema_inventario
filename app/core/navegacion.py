@@ -1,0 +1,20 @@
+from app.modules.auth.menu import Auth
+from app.modules.menu import MenuPrincipal as Principal
+from app.modules.gestion.menu import Gestion
+from app.modules.gestion.gui.buscar_datos import MenuBuscarDatos as BuscarDato
+from app.modules.gestion.gui.buscar_opcion import MenuBuscar as Buscar
+
+#####################################
+#       SISTEMA DE NAVEGACION       #
+#####################################
+
+# Aqui se tendra que agregar todos los sistema de navegacion
+# del sistema si se quiere utilizar la excepcion Navegacion()
+
+MENUS = {
+    "AUTENTICACION": Auth,
+    "PRINCIPAL": Principal,
+    "GESTION": Gestion,
+    "BUSCAR_PRODUCTOS": Buscar,
+    "BUSCAR_DATO": BuscarDato
+}
