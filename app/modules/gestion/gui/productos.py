@@ -10,7 +10,6 @@ class MenuProductos(MenuBase):
         self.etiqueta = "VER_PRODUCTOS"
         self._repo = Repositorio()
         self._agregar_productos = FormAgregar()
-
         self._titulo = {
             "principal": f"{'LISTADO DE PRODUCTOS':^60}",
             "id": f"{'ID':<5}",
@@ -48,6 +47,7 @@ class MenuProductos(MenuBase):
 
     def _procesar_eleccion(self, opcion):
         match opcion:
+            case "1": raise Navegacion("BUSCAR_PRODUCTOS")
             case "2": self._agregar_productos.crear_producto()
             case "3": raise Navegacion("GESTION")
     

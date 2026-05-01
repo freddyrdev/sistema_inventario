@@ -2,6 +2,7 @@ from app.modules.gestion.repositorio import Repositorio
 from app.utils.mensajes import Mensaje
 from app.utils.helpers.decorators.deco_formulario import formulario
 from app.utils.helpers.decorators.deco_validacion import validacion
+from app.utils.helpers.gui.menu import Navegacion
 
 class FormAgregar():
     def __init__(self):
@@ -19,7 +20,7 @@ class FormAgregar():
             })
 
             self._msg.mensaje("El producto se a creado con exito.", "exito")
-            return True
+            raise Navegacion("GESTION")
     
     @validacion
     def _pedir_dato(self, etiqueta, **reglas):
