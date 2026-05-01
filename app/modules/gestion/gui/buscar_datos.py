@@ -2,6 +2,7 @@ from colorama import Fore, Style
 
 from app.utils.helpers.gui.menu import MenuBase
 from app.modules.gestion.services.agregar import FormAgregar
+from app.utils.helpers.gui.menu import Navegacion
 
 class MenuBuscarDatos(MenuBase):
     def __init__(self, producto):
@@ -44,7 +45,7 @@ class MenuBuscarDatos(MenuBase):
     def _procesar_eleccion(self, opcion):
         match opcion:
             case "1": self._form_producto.crear_producto()
-            case "2": self.salir() 
+            case "2": raise Navegacion("GESTION")
             case _: self._msg.mensaje("La opcion ingresada es invalida.", "error")
 
     def _formatear_nombre(self, nombre, ancho):

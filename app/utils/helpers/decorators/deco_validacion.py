@@ -31,6 +31,9 @@ def validacion(func):
     | tipo | `type` | Ninguna | `str` |
     | consulta | `function` | `campo` | `None` |
     | campo | `str` | `consulta` | `None` |
+    | unico | `bool` | `consulta` | `False` |
+    | existe | `bool` | `consulta` | `False` |
+    | retorno | `texto`/`consulta` | `consulta` | `texto` |
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
@@ -42,6 +45,7 @@ def validacion(func):
 
             # El valor que se escribe en el formulario
             valor_texto = str(valor).strip() if valor is not None else ""
+            respuesta_db = None
 
             # Mapa de reglas
             obligatorio = reglas.get("obligatorio", True)
@@ -50,6 +54,9 @@ def validacion(func):
             tipo = reglas.get("tipo", str)
             consulta = reglas.get("consulta", None)
             campo = reglas.get("campo", None)
+            unico = reglas.get("unico", False)
+            existe = reglas.get("existe", False)
+            retorno = reglas.get("retorno", "texto")
 
             # DEPENDENCIA: Si default tiene valor obligatorio sera False
             if default != None: obligatorio = False
@@ -82,16 +89,26 @@ def validacion(func):
                     self._msg.mensaje("El tipo de dato ingresado es invalido.", "error")
                     continue
                 
+            # CONFIGURACION: Validacion de los campos unicos
+            if (consulta or unico or existe) and not campo:
+                raise TypeError("The 'campo' argument is required to use 'unico' option")
+            
+            criterio = { campo: valor_texto } if campo else {}
+
+            # REGLA: Hacer consultas SQL en un campo en especifico
+            if consulta: respuesta_db = consulta(**criterio)
+
+            # REGLA: Verificar si un dato existe
+            if existe and (respuesta_db is None):
+                self._msg.mensaje(f"'{valor_texto}' no existe en el sistema.", "error")
+                continue
+
             # REGLA: Verificar si un dato es unico en la base de datos
-            if consulta:
-                if not campo:
-                    raise TypeError("The 'campo' argument is required to use 'unico' option")
-                
-                criterio = { campo: valor_texto }
+            if unico and (respuesta_db is not None):
+                self._msg.mensaje(f"'{valor_texto}' ya existe en el sistema.", "error")
+                continue
 
-                if consulta(**criterio) is not None:
-                    self._msg.mensaje(f"'{valor_texto}' ya existe en el sistema.", "error")
-                    continue
-
+            if consulta and (retorno.lower() == "consulta"): 
+                return respuesta_db
             return valor_texto
     return envoltorio

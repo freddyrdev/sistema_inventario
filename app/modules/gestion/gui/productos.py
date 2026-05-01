@@ -1,13 +1,15 @@
 from colorama import Fore, Style
 
-from app.utils.helpers.gui.menu import MenuBase
+from app.utils.helpers.gui.menu import MenuBase, Navegacion
 from app.modules.gestion.repositorio import Repositorio
+from app.modules.gestion.services.agregar import FormAgregar
 
 class MenuProductos(MenuBase):
     def __init__(self):
         super().__init__()
         self.etiqueta = "VER_PRODUCTOS"
         self._repo = Repositorio()
+        self._agregar_productos = FormAgregar()
 
         self._titulo = {
             "principal": f"{'LISTADO DE PRODUCTOS':^60}",
@@ -16,7 +18,7 @@ class MenuProductos(MenuBase):
             "precio": f"{'PRECIO':<10}",
             "stock": "STOCK"
         }
-        
+
     def _mostrar_gui(self):
         productos = self._repo.obtener_productos()
 
@@ -42,20 +44,13 @@ class MenuProductos(MenuBase):
             print(f"{p["id"]:<5} | {nombre_f} | ${p["precio"]:>9.2f}  | {stock_msg}")
 
         print("-"*60)
-        print("\n[1] Ver detalle   [2] Añadir nuevo   [3] Volver")
+        print("\n[1] Ver detalle   [2] Agregar nuevo   [3] Volver")
 
-        opcion = input("> ")
-
-        if not opcion.isdigit():
-            self._msg.mensaje("La opcion ingresada es invalida.", "error")
-            return None
-        return opcion
-    
     def _procesar_eleccion(self, opcion):
         match opcion:
-            case "3": self.salir()
+            case "2": self._agregar_productos.crear_producto()
+            case "3": raise Navegacion("GESTION")
     
-
     def _formatear_nombre(self, nombre, ancho):
         if len(nombre) > ancho:
             return nombre[:ancho-3] + "..."

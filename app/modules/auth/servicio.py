@@ -12,12 +12,18 @@ class Servicio:
     @formulario
     def iniciar_sesion(self):
         while True:
-            usuario = self._repo.buscar_usuario({
+            datos = {
                 "usuario": self._pedir_dato("Nombre de usuario"),
                 "email": self._pedir_dato("Correo electronico", email=True),
-                "contrasenia": self._pedir_dato("Contrasena")
-            })
+                "contrasenia": self._pedir_dato("Contraseña")
+            }
 
+            usuario = self._repo.buscar_usuario(datos)
+
+            if datos["contrasenia"] != usuario["contrasenia"]:
+                self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
+                continue
+            
             if usuario:
                 self._msg.mensaje("Inicio de sesion con exito.", "exito")
                 return True

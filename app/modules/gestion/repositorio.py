@@ -26,12 +26,21 @@ class Repositorio:
         self._conexion.commit()
 
     def buscar_producto(self, **producto):
+        """
+        Estos son los siguientes kwargs permitidos en la consulta SQL
+        | Kwargs | Tipo de dato | Valores permitidos |
+        | :--- | :---: | :---: |
+        | nombre | `str` | `None` |
+        | id | `int` | `None` |
+        | categoria | `str` | `None` |
+        """
         cursor = self._conexion.cursor()
         
         cursor.execute(
-            "SELECT * FROM productos WHERE nombre = ? OR id = ?;", (
+            "SELECT * FROM productos WHERE nombre = ? OR id = ? OR categoria = ?;", (
                 producto.get("nombre", None), 
-                producto.get("id", None)
+                producto.get("id", None),
+                producto.get("categoria", None)
         ))
 
         return cursor.fetchone()

@@ -2,7 +2,8 @@ from app.modules.auth.menu import Auth
 from app.modules.menu import MenuPrincipal as Principal
 from app.modules.gestion.menu import Gestion
 from app.modules.gestion.gui.buscar_datos import MenuBuscarDatos as BuscarDato
-from app.modules.gestion.gui.buscar_opcion import MenuBuscar as Buscar
+from app.modules.gestion.gui.buscar_opcion import MenuBuscar as Buscar 
+from app.modules.gestion.gui.productos import MenuProductos as Productos
 
 #####################################
 #       SISTEMA DE NAVEGACION       #
@@ -16,5 +17,6 @@ MENUS = {
     "PRINCIPAL": Principal,
     "GESTION": Gestion,
     "BUSCAR_PRODUCTOS": Buscar,
-    "BUSCAR_DATO": BuscarDato
+    "BUSCAR_DATO": BuscarDato,
+    "VER_PRODUCTOS": Productos
 }
