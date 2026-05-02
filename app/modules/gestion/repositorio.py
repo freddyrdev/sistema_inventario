@@ -44,3 +44,21 @@ class Repositorio:
         ))
 
         return cursor.fetchone()
+    
+    def editar_producto(self, producto, **busqueda):
+        cursor = self._conexion.cursor()
+
+        cursor.execute("""
+            UPDATE productos SET nombre = ?, categoria = ?, precio = ?, stock = ?
+            WHERE nombre = ? OR id = ? OR categoria = ?""", (
+                producto.get("nombre"),
+                producto.get("categoria"),
+                producto.get("precio"),
+                producto.get("stock"),
+
+                busqueda.get("nombre", None),
+                busqueda.get("id", None),
+                busqueda.get("categoria", None)
+        ))
+
+        self._conexion.commit()

@@ -2,6 +2,7 @@ from colorama import Fore, Style
 
 from app.utils.helpers.gui.menu import MenuBase
 from app.modules.gestion.services.agregar import FormAgregar
+from app.modules.gestion.services.editar import FormEditar
 from app.utils.helpers.gui.menu import Navegacion
 
 class MenuBuscarDatos(MenuBase):
@@ -9,6 +10,7 @@ class MenuBuscarDatos(MenuBase):
         super().__init__()
         self.etiqueta = "BUSCAR_PRODUCTOS"
         self._form_producto = FormAgregar()
+        self._form_editar = FormEditar()
         self._producto = producto
         self._titulo = {
             "principal": f"{'LISTADO DE PRODUCTOS':^60}",
@@ -40,12 +42,12 @@ class MenuBuscarDatos(MenuBase):
         print("-"*60)
         print(f"{id_prod:<5} | {nombre} | ${precio:>9.2f}  | {stock_msg}")
         print("-"*60)
-        print("\n[1] Añadir nuevo   [2] Volver")
+        print("\n[1] Editar producto   [2] Eliminar producto   [3] Volver")
 
     def _procesar_eleccion(self, opcion):
         match opcion:
-            case "1": self._form_producto.crear_producto()
-            case "2": raise Navegacion("GESTION")
+            case "1": self._form_editar.editar_producto(self._producto)
+            case "3": raise Navegacion("GESTION")
             case _: self._msg.mensaje("La opcion ingresada es invalida.", "error")
 
     def _formatear_nombre(self, nombre, ancho):

@@ -13,7 +13,6 @@ class Gestion(MenuBase):
             "\n[1] Ver productos"
             "\n[2] Agregar producto"
             "\n[3] Buscar producto"
-            # "\n[4] Editar producto"
             # "\n[5] Eliminar producto"
             "\n[6] Salir"
         )
