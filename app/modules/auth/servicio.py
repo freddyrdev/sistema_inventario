@@ -19,24 +19,25 @@ class Servicio:
             }
 
             usuario = self._repo.buscar_usuario(datos)
-
-            if datos["contrasenia"] != usuario["contrasenia"]:
-                self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
-                continue
-
-            if datos["usuario"] != usuario["usuario"]:
-                self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
-                continue
-
-            if datos["email"] != usuario["email"]:
-                self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
-                continue
             
-            if usuario:
-                self._msg.mensaje("Inicio de sesion con exito.", "exito")
-                return True
-            
-            self._msg.mensaje("Las credenciales ingresadas no son validas.", "error")
+            try:
+                if datos["contrasenia"] != usuario["contrasenia"]:
+                    self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
+                    continue
+
+                if datos["usuario"] != usuario["usuario"]:
+                    self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
+                    continue
+
+                if datos["email"] != usuario["email"]:
+                    self._msg.mensaje("Las credenciaes ingresadas no son validas.", "error")
+                    continue
+                
+                if usuario:
+                    self._msg.mensaje("Inicio de sesion con exito.", "exito")
+                    return True
+            except TypeError:
+                self._msg.mensaje("Las credenciales ingresadas no son validas.", "error")
 
     @formulario
     def registro(self):

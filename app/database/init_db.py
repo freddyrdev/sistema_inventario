@@ -29,11 +29,13 @@ def iniciar_db():
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS movimientos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        producto_id INTEGER,
-        tipo TEXT,
-        cantidad INTEGER,
-        fecha TEXT
-    )
+        producto_id INTEGER NOT NULL,
+        producto_nombre TEXT NOT NULL,
+        cantidad_total INTEGER NOT NULL,
+        cantidad_removida INTEGER NOT NULL,
+        motivo TEXT,
+        fecha DATETIME DEFAULT (DATETIME('now', 'localtime'))
+    );
     """)
 
     conexion.commit()

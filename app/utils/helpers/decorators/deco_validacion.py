@@ -34,6 +34,8 @@ def validacion(func):
     | unico | `bool` | `consulta` | `False` |
     | existe | `bool` | `consulta` | `False` |
     | retorno | `texto`/`consulta` | `consulta` | `texto` |
+    | longitud_max | `int` | `Ninguna` | `indefinido` |
+    | valor_max | `int`/`float` | `tipo int o float` | `indefinido`
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):
@@ -57,6 +59,8 @@ def validacion(func):
             unico = reglas.get("unico", False)
             existe = reglas.get("existe", False)
             retorno = reglas.get("retorno", "texto")
+            longitud_max = reglas.get("longitud_max", None)
+            valor_max = reglas.get("valor_max", None)
 
             # DEPENDENCIA: Si default tiene valor obligatorio sera False
             if default != None: obligatorio = False
@@ -68,6 +72,11 @@ def validacion(func):
             # REGLA: Obligatorio
             if obligatorio and not valor_texto:
                 self._msg.mensaje(f"{ etiqueta } es requerido.", "error")
+                continue
+
+            # REGLA: Longitud maxima
+            if longitud_max and (len(valor_texto) > longitud_max ):
+                self._msg.mensaje(f"{ etiqueta } rebasa la longitud maxima.")
                 continue
 
             # REGLA: Validacion email con expresion regular
@@ -88,6 +97,16 @@ def validacion(func):
                 except ValueError:
                     self._msg.mensaje("El tipo de dato ingresado es invalido.", "error")
                     continue
+
+            # REGLA: Valor maximo
+            if valor_max and (isinstance(tipo, (int, float))):
+                self._msg.mensaje("El tipo de dato es invalido.", "error")
+                continue
+
+            if valor_max and (valor_texto > valor_max):
+                self._msg.mensaje("El numero ingresado es invalido.", "error")
+                continue
+
                 
             # CONFIGURACION: Validacion de los campos unicos
             if (consulta or unico or existe) and not campo:

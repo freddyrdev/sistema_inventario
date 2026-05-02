@@ -4,6 +4,7 @@ from app.modules.gestion.menu import Gestion
 from app.modules.gestion.gui.buscar_datos import MenuBuscarDatos as BuscarDato
 from app.modules.gestion.gui.buscar_opcion import MenuBuscar as Buscar 
 from app.modules.gestion.gui.productos import MenuProductos as Productos
+from app.modules.movimientos.menu import Movimientos
 
 #####################################
 #       SISTEMA DE NAVEGACION       #
@@ -18,5 +19,6 @@ MENUS = {
     "GESTION": Gestion,
     "BUSCAR_PRODUCTOS": Buscar,
     "BUSCAR_DATO": BuscarDato,
-    "VER_PRODUCTOS": Productos
+    "VER_PRODUCTOS": Productos,
+    "MOVIMIENTOS": Movimientos
 }
