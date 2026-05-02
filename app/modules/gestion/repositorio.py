@@ -62,3 +62,12 @@ class Repositorio:
         ))
 
         self._conexion.commit()
+
+    def eliminar_producto(self, id):
+        cursor = self._conexion.cursor()
+
+        cursor.execute("""
+            DELETE FROM productos WHERE id = ?
+        """, (id,))
+
+        self._conexion.commit()

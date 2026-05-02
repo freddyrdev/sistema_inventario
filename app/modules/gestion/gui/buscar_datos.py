@@ -1,5 +1,6 @@
 from colorama import Fore, Style
 
+from app.modules.gestion.repositorio import Repositorio
 from app.utils.helpers.gui.menu import MenuBase
 from app.modules.gestion.services.agregar import FormAgregar
 from app.modules.gestion.services.editar import FormEditar
@@ -11,6 +12,7 @@ class MenuBuscarDatos(MenuBase):
         self.etiqueta = "BUSCAR_PRODUCTOS"
         self._form_producto = FormAgregar()
         self._form_editar = FormEditar()
+        self._repo = Repositorio()
         self._producto = producto
         self._titulo = {
             "principal": f"{'LISTADO DE PRODUCTOS':^60}",
@@ -19,7 +21,6 @@ class MenuBuscarDatos(MenuBase):
             "precio": f"{'PRECIO':<10}",
             "stock": "STOCK"
         }
-        
 
     def _mostrar_gui(self):
         stock = self._producto.get("stock", 0) or 0
@@ -47,6 +48,10 @@ class MenuBuscarDatos(MenuBase):
     def _procesar_eleccion(self, opcion):
         match opcion:
             case "1": self._form_editar.editar_producto(self._producto)
+            case "2": 
+                self._repo.eliminar_producto(self._producto.get("id"))
+                self._msg.mensaje("EL producto se ha eliminado con exito.", "exito")
+                raise Navegacion("GESTION")
             case "3": raise Navegacion("GESTION")
             case _: self._msg.mensaje("La opcion ingresada es invalida.", "error")
 
