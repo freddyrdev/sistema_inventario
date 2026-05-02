@@ -13,8 +13,7 @@ class Gestion(MenuBase):
             "\n[1] Ver productos"
             "\n[2] Agregar producto"
             "\n[3] Buscar producto"
-            # "\n[5] Eliminar producto"
-            "\n[6] Salir"
+            "\n[4] Salir"
         )
 
     def _procesar_eleccion(self, opcion):
@@ -22,5 +21,5 @@ class Gestion(MenuBase):
             case "1": raise Navegacion("VER_PRODUCTOS")
             case "2": self._agregar_productos.crear_producto()
             case "3": raise Navegacion("BUSCAR_PRODUCTOS")
-            case "6": raise Navegacion("PRINCIPAL")
+            case "4": raise Navegacion("PRINCIPAL")
             case _: self._msg.mensaje("La opcion ingresada es invalida.", "error")
