@@ -35,7 +35,7 @@ def validacion(func):
     | existe | `bool` | `consulta` | `False` |
     | retorno | `texto`/`consulta` | `consulta` | `texto` |
     | longitud_max | `int` | `Ninguna` | `indefinido` |
-    | valor_max | `int`/`float` | `tipo int o float` | `indefinido`
+    | valor_max | `int`/`float` | `tipo int o float` | `indefinido` |
     """
     @wraps(func)
     def envoltorio(self, etiqueta, **reglas):

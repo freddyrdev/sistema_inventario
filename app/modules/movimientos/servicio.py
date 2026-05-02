@@ -12,7 +12,7 @@ class FormMovimientos:
         self._repo = Repositorio()
 
     @formulario
-    def movimientos(self):
+    def entrada(self):
         while True:
             producto = self._pedir_dato("nombre del producto", consulta=self._repo_gestion.buscar_producto, campo="nombre", existe=True, retorno="consulta")
 
@@ -24,6 +24,32 @@ class FormMovimientos:
                 "producto_nombre": producto["nombre"],
                 "cantidad_total": cantidad_total,
                 "cantidad_removida": 0,
+                "motivo": self._pedir_dato("Motivo", default="No hay ningun motivo")
+            })
+
+            self._repo_gestion.editar_producto({
+                "nombre": producto["nombre"],
+                "categoria": producto["categoria"],
+                "precio": producto["stock"],
+                "stock": cantidad_total
+            }, id=producto["id"])
+
+            self._msg.mensaje("El Stock de a actualizado correctamente.", "exito")
+            raise Navegacion("MOVIMIENTOS")
+
+    @formulario
+    def salida(self):
+        while True:
+            producto = self._pedir_dato("nombre del producto", consulta=self._repo_gestion.buscar_producto, campo="nombre", existe=True, retorno="consulta")
+
+            cantidad = self._pedir_dato("Cantidad", tipo=int, valor_max=producto["stock"])
+            cantidad_total = producto["stock"] - cantidad
+
+            self._repo.crear_registro({
+                "producto_id": producto["id"],
+                "producto_nombre": producto["nombre"],
+                "cantidad_total": cantidad_total,
+                "cantidad_removida": cantidad,
                 "motivo": self._pedir_dato("Motivo", default="No hay ningun motivo")
             })
 
